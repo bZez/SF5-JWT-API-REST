@@ -1,0 +1,11 @@
+{
+  "GET": {
+    "users": [
+      "show",
+      "list"
+    ]
+  },
+  "POST": {},
+  "PUT": {},
+  "DELETE": {}
+}

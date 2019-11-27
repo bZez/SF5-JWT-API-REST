@@ -1,0 +1,75 @@
+<div class="modal fade" id="rightModal-{{ partner.id }}" tabindex="-1" role="dialog"
+     aria-labelledby="rightModalLabel-{{ partner.id }}"
+     aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rightModalLabel-{{ partner.id }}">Edit {{ partner.name|upper }} access
+                    rights</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="#" name="rightForm-{{ partner.id }}" id="rightForm-{{ partner.id }}" method="post"
+                      enctype="multipart/form-data">
+                    <input type="hidden" value="{{ partner.id }}" name="partnerId" hidden>
+                    <h5>Controllers:</h5>
+                    <div class="row">
+                        {% for controller in controllers %}
+                        {% set ctlName = (controller.name~'s')|lower %}
+                        {% if (partner.privileges[controller.source]['GET'] is defined and ctlName in partner.privileges[controller.source]['GET']|keys)
+                        or (partner.privileges[controller.source]['POST'] is defined and ctlName in partner.privileges[controller.source]['POST']|keys)
+                        or (partner.privileges[controller.source]['PUT'] is defined and ctlName in partner.privileges[controller.source]['PUT']|keys)
+                        or (partner.privileges[controller.source]['DELETE'] is defined and ctlName in partner.privileges[controller.source]['DELETE']|keys)
+                        %}
+                        {% set bg = 'bg-GET' %}
+                        <div class="d-inline-block col mb-1 controller-block">
+                            <div class="col-12 bg-GET p-2 rounded-top font-weight-bold text-white"
+                                 onclick="toggleCheck($(this))">
+                                {#                                <input type="checkbox" name="controllers[{{ controller.source }}][]" value="{{ ctlName }}" checked hidden>#}
+                                <i class=" fa fas fa-check"></i> {{ controller.source ~' - '~ controller.name }}
+                                {% else %}
+                                {% set bg = 'bg-danger' %}
+                                <div class="d-inline-block col mb-1 controller-block">
+                                    <div class="col-12 bg-danger p-2 rounded-top font-weight-bold text-white"
+                                         onclick="toggleCheck($(this))">
+                                                                                <input type="checkbox" name="controllers" value="null">
+                                        <i class=" fa fas fa-times"></i> {{ controller.source ~' - '~ controller.name }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12 {{ bg }} rounded-bottom pb-2 actions-ctn">
+                                        {% for method in controller.methods %}
+                                            {% if (partner.privileges[controller.source][method.method][ctlName] is defined) and (method.name in partner.privileges[controller.source][method.method][ctlName]) %}
+                                                <div class="text-white bg-GET-1 p-1 rounded mb-1 action-btn"
+                                                     onclick="toggleCheck($(this),true)">
+                                                    <input type="checkbox"
+                                                           name="controllers[{{ controller.source }}][{{ method.method }}][{{ ctlName }}][]"
+                                                           value="{{ method.name }}" checked>
+                                                    <i class=" fa fas fa-check"></i> {{  method.method ~' - '~ method.name }}</div>
+                                            {% else %}
+                                                <div class="text-white bg-danger p-1 rounded mb-1 action-btn"
+                                                     onclick="toggleCheck($(this),true)">
+                                                    <input type="checkbox"
+                                                           name="controllers[{{ controller.source }}][{{ method.method }}][{{ ctlName }}][]"
+                                                           value="{{ method.name }}">
+                                                    <i class=" fa fas fa-times"></i> {{  method.method ~' - '~ method.name }}</div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                {% endfor %}
+                            </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary"
+                        onclick="submitter('rightForm-{{ partner.id }}')">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

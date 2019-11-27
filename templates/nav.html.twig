@@ -1,0 +1,62 @@
+<nav class="navbar navbar-expand-md navbar-light navbar-top bg-transparent w-100">
+    <a class="navbar-brand" href="#">
+        <h1 class="h4 mb-0" style="line-height: 0.5"><span class="font-weight-bold"><img
+                        src="{{ asset('svg/api-logo.svg') }}" alt="API Logo" width="40px"> API</span>Access</h1>
+    </a>
+    <button onclick="$(this).toggleClass('active')" class="nav-icon navbar-toggler border-0" type="button"
+            data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false"
+            aria-label="Toggle navigation">
+        <div></div>
+    </button>
+    {% if is_granted('ROLE_ADMIN') %}
+    {% set prefix = '../../_secure/' %}
+    {% else %}
+        {% set prefix = '../../~private/' %}
+    {% endif %}
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {% if '_dash' in app.request.get('_route') %}active{% endif %}">
+                <a class="nav-link" href="{{ prefix }}"><i class="fas fa-tachometer-alt"></i> &nbsp;
+                    Dashboard <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item {% if '_user' in app.request.get('_route') %}active{% endif %}">
+                <a class="nav-link" href="{{ prefix }}users"><i class="fas fa-users"></i> &nbsp; Users</a>
+            </li>
+            {% if is_granted('ROLE_ADMIN') %}
+            <li class="nav-item {% if '_partner' in app.request.get('_route') %}active{% endif %}">
+                <a class="nav-link" href="{{ prefix }}partners"><i class="fas fa-users"></i> &nbsp; Partners</a>
+            </li>
+            {% endif %}
+            <li class="nav-item {% if '_data' in app.request.get('_route') %}active{% endif %}">
+                <a class="nav-link" href="{{ prefix }}datas"><i class="fas fa-database"></i> &nbsp; Data</a>
+            </li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item {% if '_request' in app.request.get('_route') %}active{% endif %}">
+                    <a class="nav-link" href="{{ prefix }}requests"><i class="fas fa-clock"></i> &nbsp; Request</a>
+                </li>
+            {% endif %}
+            <li class="nav-item {% if '_activity' in app.request.get('_route') %}active{% endif %}">
+                <a class="nav-link" href="{{ prefix }}activity"><i class="fas fa-chart-line"></i> &nbsp; Activity</a>
+            </li>
+        </ul>
+        <a href="{{ path('api_front_logout') }}" class="btn btn btn-primary shadow-none mr-2" id="btn-logout"
+           type="submit">
+            <i class="fas fa-sign-out-alt"></i> &nbsp; Logout
+        </a>
+        {#<form class="form-inline mt-2 mt-md-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>#}
+    </div>
+</nav>
+<div class="container-fluid" hidden>
+    <div class="user-detail-box ml-2 row align-items-center">
+        <div class="col-3">
+            <div class="user-pics text-center font-weight-bold text-white rounded-circle">{{ app.user.email[:1]|upper }}</div>
+        </div>
+        <div class="col-9">
+            <span class="user-name d-block">{{ app.user.email }}</span>
+            <span class="user-role d-block">{{ app.user.roles[0] }}</span>
+        </div>
+    </div>
+</div>

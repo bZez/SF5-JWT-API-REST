@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API - {% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('css/front.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/nav.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/checkbox.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ asset('css/prism.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/chartist.min.css') }}">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+{% if app.user %}
+    <div id="overlayer"></div>
+    <span class="loader">
+        <span class="loader-inner"></span>
+    </span>
+    {% include 'nav.html.twig' %}
+{% endif %}
+<div class="container-fluid overflow-hidden" id="content">
+    {% block body %}{% endblock %}
+</div>
+<div class="fixed-bottom text-center w-100 p-2 small">
+    with
+    <small><i class="fa fas fa-heart"></i></small>
+    &
+    <small><i class="fa fas fa-coffee"></i></small>
+    by <a
+            href="https://git.bzez.dev" class="text-green">Sam BZEZ</a> - © 2019
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script src="{{ asset('js/main.js') }}"></script>
+<script src="{{ asset('js/prism.js') }}"></script>
+<script src="{{ asset('js/chartist.min.js') }}"></script>
+{% if app.user %}
+    <script>
+        $('body').toggleClass('logged');
+        $(window).on('load', (function (e) {
+            $(".loader").delay(500).fadeOut('slow');
+            $("#overlayer").delay(500).fadeOut('slow');
+        }));
+    </script>
+{% endif %}
+{% block javascripts %}{% endblock %}
+</body>
+</html>
