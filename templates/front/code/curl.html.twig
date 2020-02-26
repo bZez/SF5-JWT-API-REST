@@ -2,7 +2,7 @@
 $API_PUBLIC_KEY = "{{ app.user.authToken.value }}"; #Your API AUTH TOKEN
 $API_PRIVATE_KEY = "{% for accessToken in app.user.authToken.accessTokens %}{% if (accessToken.controller == controller.name) and (accessToken.source == controller.source) %}{{ accessToken.value }}{% endif %}{% endfor %}"; #Your API ACCESS Token
 curl -X {{ method.method }} \
-{{ url('api_front_login') }}{{ method.endpoint[1:] }} \
+{{ url('api_front_login') }}{{ controller.source }}/{{ method.endpoint[1:] }} \
 -H "API-Authorization: $API_PUBLIC_KEY" \
 -H "ACCESS-Authorization: $API_PRIVATE_KEY" \
 -H "Content-type: application/json" \{% if method.method is same as('PUT') %}

@@ -4,8 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    TOKEN_SECRET: ''
-    API_URL: ''
+    TOKEN_SECRET: 'kB=&ah6M@VtK^yQbf&P9xDrkvcQh_emm55y3Kq#jy=DxLy$MufnPG6vuW33Z?v$'
+    API_PROD_URL: 'http://api.mgel.fr/apilocal'
+    API_DEV_URL: 'http://api.mgel/apilocal'
 services:
     # default configuration for services in *this* file
     _defaults:

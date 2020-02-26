@@ -107,12 +107,12 @@
         });
 
         new Chartist.Pie('.all-chart', {
-            labels: ['GET', 'POST', 'PUT', 'DELETE'],
+            labels: ['GET', 'PUT', 'POST', 'DELETE'],
             series: [
-                {% if activities[y]['POST'] > 0 %}{{ (totalCalls/activities[y]['POST'])*100 }}{% else %}0{% endif %},
-                {% if activities[y]['GET'] > 0 %}{{ (totalCalls/activities[y]['GET'])*100 }}{% else %}0{% endif %},
-                {% if activities[y]['PUT'] > 0 %}{{ (totalCalls/activities[y]['PUT'])*100 }}{% else %}0{% endif %},
-                {% if activities[y]['DELETE'] > 0 %}{{ (totalCalls/activities[y]['DELETE'])*100 }}{% else %}0{% endif %}
+                {% if activities[y]['GET'] > 0 %}{{ (activities[y]['GET']) }}{% else %}0{% endif %},
+                {% if activities[y]['POST'] > 0 %}{{ (activities[y]['POST']) }}{% else %}0{% endif %},
+                {% if activities[y]['PUT'] > 0 %}{{ (activities[y]['PUT']) }}{% else %}0{% endif %},
+                {% if activities[y]['DELETE'] > 0 %}{{ (activities[y]['DELETE']) }}{% else %}0{% endif %},
             ]
         }, {
             donut: true,

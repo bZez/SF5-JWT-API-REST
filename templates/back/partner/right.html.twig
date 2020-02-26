@@ -16,13 +16,13 @@
                     <input type="hidden" value="{{ partner.id }}" name="partnerId" hidden>
                     <h5>Controllers:</h5>
                     <div class="row">
-                        {% for controller in controllers %}
+                        {% for source in controllers|keys %}
+                        {% for controller in controllers[source] %}
                         {% set ctlName = (controller.name~'s')|lower %}
                         {% if (partner.privileges[controller.source]['GET'] is defined and ctlName in partner.privileges[controller.source]['GET']|keys)
-                        or (partner.privileges[controller.source]['POST'] is defined and ctlName in partner.privileges[controller.source]['POST']|keys)
-                        or (partner.privileges[controller.source]['PUT'] is defined and ctlName in partner.privileges[controller.source]['PUT']|keys)
-                        or (partner.privileges[controller.source]['DELETE'] is defined and ctlName in partner.privileges[controller.source]['DELETE']|keys)
-                        %}
+                            or (partner.privileges[controller.source]['POST'] is defined and ctlName in partner.privileges[controller.source]['POST']|keys)
+                            or (partner.privileges[controller.source]['PUT'] is defined and ctlName in partner.privileges[controller.source]['PUT']|keys)
+                            or (partner.privileges[controller.source]['DELETE'] is defined and ctlName in partner.privileges[controller.source]['DELETE']|keys) %}
                         {% set bg = 'bg-GET' %}
                         <div class="d-inline-block col mb-1 controller-block">
                             <div class="col-12 bg-GET p-2 rounded-top font-weight-bold text-white"
@@ -34,7 +34,7 @@
                                 <div class="d-inline-block col mb-1 controller-block">
                                     <div class="col-12 bg-danger p-2 rounded-top font-weight-bold text-white"
                                          onclick="toggleCheck($(this))">
-                                                                                <input type="checkbox" name="controllers" value="null">
+                                        <input type="checkbox" name="controllers" value="null">
                                         <i class=" fa fas fa-times"></i> {{ controller.source ~' - '~ controller.name }}
                                         {% endif %}
                                     </div>
@@ -46,19 +46,22 @@
                                                     <input type="checkbox"
                                                            name="controllers[{{ controller.source }}][{{ method.method }}][{{ ctlName }}][]"
                                                            value="{{ method.name }}" checked>
-                                                    <i class=" fa fas fa-check"></i> {{  method.method ~' - '~ method.name }}</div>
+                                                    <i class=" fa fas fa-check"></i> {{ method.method ~' - '~ method.name }}
+                                                </div>
                                             {% else %}
                                                 <div class="text-white bg-danger p-1 rounded mb-1 action-btn"
                                                      onclick="toggleCheck($(this),true)">
                                                     <input type="checkbox"
                                                            name="controllers[{{ controller.source }}][{{ method.method }}][{{ ctlName }}][]"
                                                            value="{{ method.name }}">
-                                                    <i class=" fa fas fa-times"></i> {{  method.method ~' - '~ method.name }}</div>
+                                                    <i class=" fa fas fa-times"></i> {{ method.method ~' - '~ method.name }}
+                                                </div>
                                             {% endif %}
                                         {% endfor %}
                                     </div>
                                 </div>
 
+                                {% endfor %}
                                 {% endfor %}
                             </div>
                 </form>

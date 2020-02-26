@@ -17,7 +17,7 @@ body {
 body::after {
     z-index: -1;
     content: "";
-    position: absolute;
+    position: fixed;
     background-color: white;
     padding-bottom: 100%;
     width: 100%;
@@ -63,6 +63,12 @@ input[type="email"], input[type="text"], input[type="password"] {
     border: 1px solid #A2B7DC;
     margin: .5rem;
     color: #F9F9FF;
+}
+code {
+    -webkit-user-select: all!important;
+    -moz-user-select: all!important;
+    -ms-user-select: all!important;
+    user-select: all!important;
 }
 
 .text-green {

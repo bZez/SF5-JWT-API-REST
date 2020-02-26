@@ -109,6 +109,7 @@ class TokenAuthentication extends AbstractController
         $source = strtoupper($endpoint[1]);
         $segment = $endpoint[2];
         $storedCtl = $accessToken->getController() . 's';
+        $storedSource = $accessToken->getSource();
         $action = explode('?',$endpoint[3])[0];
         $privileges = $authToken->getUser()->getPartner()->getPrivileges();
         /**
@@ -123,7 +124,7 @@ class TokenAuthentication extends AbstractController
                 /**
                  * @Check Segment
                  */
-                if ((array_key_exists($segment, $privileges[$source][$method])) && (strtolower($segment) === strtolower($storedCtl))) {
+                if ((array_key_exists($segment, $privileges[$source][$method])) && (strtolower($segment) === strtolower($storedCtl)) && (strtolower($source) === strtolower($storedSource))) {
                     /**
                      * @Check Action
                      */
@@ -167,21 +168,22 @@ class TokenAuthentication extends AbstractController
             $action = 'show';
         }
         $em = $this->getDoctrine()->getManager();
+        $activityFound = false;
          if(count($activities = $user->getActivities()) > 0)
          {
              foreach ($activities as $activity){
-                 if(($activity->getDate()->format('Y-m-d') === $now)
-                     && ($activity->getController() === $controller)
-                     && ($activity->getMethod() === $method)
-                     && ($activity->getAction() === $action)
-                     && ($activity->getSource() === $source))
+                 if(($activity->getDate()->format('Y-m-d') == $now)
+                     && ($activity->getController() == $controller)
+                     && ($activity->getMethod() == $method)
+                     && ($activity->getAction() == $action)
+                     && ($activity->getSource() == $source))
                  {
                      $activity->increment();
-                 } else {
-                     $activity = new Activity($user,$source,$method,$controller,$action);
+                     $activityFound = true;
                  }
              }
-         } else {
+         }
+         if(!$activityFound){
              $activity = new Activity($user,$source,$method,$controller,$action);
          }
         $em->persist($activity);

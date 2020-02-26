@@ -8,6 +8,8 @@ use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\HttpKernel\KernelInterface;
 
+
+
 class DataParser
 {
     public $controllers;
@@ -23,24 +25,25 @@ class DataParser
         if ($kernel) {
             $part = new \DirectoryIterator(dirname($kernel->getProjectDir() . '/src/Controller/Data/*'));
             foreach ($part as $f) {
+
                 if ($f->isDir() && !$f->isDot()) {
                     $dataDir = $kernel->getProjectDir() . '/src/Controller/Data/' . $f . '/*';
                     $dir = new \DirectoryIterator(dirname($dataDir));
-                    $this->controllers = [];
-                    $i = 0;
+                    $this->controllers[$f->getFilename()] = [];
+                    $i =0;
                     foreach ($dir as $fileinfo) {
                         if (!$fileinfo->isDot() && !$fileinfo->isDir()) {
                             $className = explode('.', $fileinfo->getFilename())[0];
                             $c = new ReflectionClass('App\Controller\Data\\' . $f . '\\' . $className);
-                            $this->controllers[$i]['name'] = substr($className, 0, -10);
-                            $this->controllers[$i]['source'] = "$f";
+                            $this->controllers[$f->getFilename()][$i]['name'] = substr($className, 0, -10);
+                            $this->controllers[$f->getFilename()][$i]['source'] = "$f";
                             $doc = str_replace('*', '', $c->getDocComment());
                             $doc = str_replace('/', '', $doc);
                             $doc = str_replace('\\', '', $doc);
-                            $this->controllers[$i]['doc'] = $doc;
+                            $this->controllers[$f->getFilename()][$i]['doc'] = $doc;
                             foreach ($c->getMethods() as $id => $m) {
                                 if (($m->class == $c->name) && !$this->startsWith($m->name, '__')) {
-                                    $this->controllers[$i]['methods'][] = [
+                                    $this->controllers[$f->getFilename()][$i]['methods'][] = [
                                         'name' => $m->name,
                                         'endpoint' => $this->parseMethodComments($c, $m)['endpoint'],
                                         'method' => $this->parseMethodComments($c, $m)['method'],
@@ -55,8 +58,8 @@ class DataParser
                     }
                 }
             }
-
         }
+
     }
 
     public function parseMethodComments($c, $m)

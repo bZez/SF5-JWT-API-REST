@@ -41,4 +41,30 @@ class ApiFrontController extends AbstractController
             'controllers' => $controllers,
         ]);
     }
+
+   /* public function contract($id)
+    {
+        return $this->render('contracts/contract'.$id.'.html.twig',[
+            'rootdir' => '',
+            'adherent' => [
+                'lastName' => 'TEST',
+                'firstName' => 'Tester',
+                'address'=> '44 cours Léopold',
+                'addressComplementary'=> '',
+                'postalCode'=> '54000',
+                'email'=> 'test@mgel.fr',
+                'city'=> 'NANCY',
+                'mobile'=> '06.07.08.09.10',
+                'adherentNumber' => 'XX',
+            ],
+            'formule'=>[
+                'nom'=>'NomFormule'
+            ],
+            'destination' =>'SomeWhere',
+            'price' =>'XXX',
+            'monthly' =>false,
+            'startDate' => new \DateTime(),
+            'endDate' => new \DateTime(),
+        ]);
+    }*/
 }

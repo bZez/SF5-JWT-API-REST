@@ -24,7 +24,7 @@
             ]
     ];
     $context = stream_context_create($opts);
-    $endpoint = file_get_contents('{{ url('api_front_login') }}{{ method.endpoint[1:] }}', false, $context);
+    $endpoint = file_get_contents('{{ url('api_front_login') }}{{ controller.source }}/{{ method.endpoint[1:] }}', false, $context);
 
     $response = json_decode($endpoint);
 ?></code>

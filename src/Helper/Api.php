@@ -15,12 +15,14 @@ class Api
      */
     public function __construct(ParameterBagInterface $params)
     {
-        $this->URL = $params->get('API_URL');
+        if (getenv('APP_ENV') === 'dev')
+            $this->URL = $params->get('API_DEV_URL');
+        else
+            $this->URL = $params->get('API_PROD_URL');
     }
 
-    public function get($datas,$die=null)
+    public function get($datas, $die = null)
     {
-
         $params = array(
             CURLOPT_URL => $this->URL,
             CURLOPT_POST => true,
@@ -34,13 +36,12 @@ class Api
         $output = curl_exec($ch);
         // close curl resource to free up system resources
         curl_close($ch);
-        if($die){
+        if ($die) {
             die($output);
         }
-
-        try{
-            $output = json_decode($output,true);
-        }catch (\Exception $e){
+        try {
+            $output = json_decode($output, true);
+        } catch (\Exception $e) {
             return false;
         }
         return $output;
